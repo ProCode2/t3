@@ -2,25 +2,29 @@ import React, { useState } from "react";
 import Board from "./Board";
 
 const Game = () => {
+  // to store all the game states
   const [blocks, setBlocks] = useState([Array(9).fill("")]);
+  // decide between X and O
   const [xIsNext, setxIsNext] = useState(true);
   const [stepNum, setStepNum] = useState(0);
   const winner = calculateWinner(blocks[stepNum]);
 
   const value = xIsNext ? "X" : "O";
 
+  // update game state
   const handleClick = (index) => {
     const history = blocks.slice(0, stepNum + 1);
     const current = history[stepNum];
     if (winner || current[index]) return;
-    let na = [...current];
-    na[index] = value;
+    let newArray = [...current];
+    newArray[index] = value;
 
-    setBlocks((oa) => [...history, na]);
+    setBlocks(() => [...history, newArray]);
     setStepNum(history.length);
     setxIsNext(!xIsNext);
   };
 
+  // jump to a game state
   const jumpTo = (step) => {
     setStepNum(step);
     setxIsNext(step % 2 === 0);
